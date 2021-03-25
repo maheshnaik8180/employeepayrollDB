@@ -312,3 +312,39 @@ mysql> select * from employee_payroll;
 +----+--------+----------+---------+------------+--------+--------+------------+-------------+-----+---------+------------+
 5 rows in set (0.02 sec)
 
+
+
+USE CASE 10
+
+
+mysql> desc employee_payroll;
++-------------+------------------+------+-----+---------+----------------+
+| Field       | Type             | Null | Key | Default | Extra          |
++-------------+------------------+------+-----+---------+----------------+
+| id          | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| name        | varchar(150)     | NO   |     | NULL    |                |
+| phone_no    | varchar(250)     | YES  |     | NULL    |                |
+| address     | varchar(250)     | YES  |     | TBD     |                |
+| department  | varchar(250)     | NO   |     | NULL    |                |
+| gender      | char(1)          | YES  |     | NULL    |                |
+| basic_pay   | double           | NO   |     | NULL    |                |
+| deductions  | double           | NO   |     | NULL    |                |
+| taxable_pay | double           | NO   |     | NULL    |                |
+| tax         | double           | NO   |     | NULL    |                |
+| net_pay     | double           | NO   |     | NULL    |                |
+| start       | date             | NO   |     | NULL    |                |
++-------------+------------------+------+-----+---------+----------------+
+12 rows in set (0.11 sec)
+
+mysql> select * from employee_payroll;
++----+---------+----------+---------+------------+--------+-----------+------------+-------------+-----+---------+------------+
+| id | name    | phone_no | address | department | gender | basic_pay | deductions | taxable_pay | tax | net_pay | start      |
++----+---------+----------+---------+------------+--------+-----------+------------+-------------+-----+---------+------------+
+|  1 | ajay    | NULL     | NULL    |            | M      |         0 |          0 |           0 |   0 |       0 | 2018-01-03 |
+|  2 | vinit   | NULL     | NULL    |            | M      |         0 |          0 |           0 |   0 |       0 | 2019-11-13 |
+|  3 | pravin  | NULL     | NULL    |            | M      |         0 |          0 |           0 |   0 |       0 | 2020-05-21 |
+|  4 | Pooja   | NULL     | NULL    |            | F      |         0 |          0 |           0 |   0 |       0 | 2020-07-07 |
+|  5 | Eva     | NULL     | NULL    |            | F      |         0 |          0 |           0 |   0 |       0 | 2019-07-09 |
+|  6 | Terissa | NULL     | NULL    | TBD        | F      |   3000000 |          0 |           0 |   0 |       0 | 2019-11-13 |
++----+---------+----------+---------+------------+--------+-----------+------------+-------------+-----+---------+------------+
+6 rows in set (0.00 sec)
