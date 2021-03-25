@@ -348,3 +348,182 @@ mysql> select * from employee_payroll;
 |  6 | Terissa | NULL     | NULL    | TBD        | F      |   3000000 |          0 |           0 |   0 |       0 | 2019-11-13 |
 +----+---------+----------+---------+------------+--------+-----------+------------+-------------+-----+---------+------------+
 6 rows in set (0.00 sec)
+
+
+
+
+USECASE 11
+
+mysql> CREATE TABLE company (
+    -> company_id INT NOT NULL ,
+    -> company_name VARCHAR(250) NOT NULL,
+    -> PRIMARY KEY (company_ID)
+    -> );
+Query OK, 0 rows affected (0.73 sec)
+
+mysql> INSERT INTO company VALUES
+    -> (1, 'Oracle'),
+    -> (2, 'Microsoft');
+Query OK, 2 rows affected (0.18 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM company;
++------------+--------------+
+| company_id | company_name |
++------------+--------------+
+|          1 | Oracle       |
+|          2 | Microsoft    |
++------------+--------------+
+2 rows in set (0.00 sec)
+
+
+mysql> CREATE TABLE department(
+    -> dept_ID INT NOT NULL,
+    -> dept_name VARCHAR(100) NOT NULL,
+    -> PRIMARY KEY(dept_ID)
+    ->  );
+Query OK, 0 rows affected (0.57 sec)
+
+mysql> DESC department;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| dept_ID   | int(11)      | NO   | PRI | NULL    |       |
+| dept_name | varchar(100) | NO   |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+2 rows in set (0.12 sec)
+
+mysql> INSERT INTO department VALUES
+    -> (8,'Sales'),
+    -> (9,'Marketing'),
+    ->  (7,'HR');
+Query OK, 3 rows affected (0.05 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM department;
++---------+-----------+
+| dept_ID | dept_name |
++---------+-----------+
+|       7 | HR        |
+|       8 | Sales     |
+|       9 | Marketing |
++---------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> CREATE TABLE employee (
+    -> employee_id INT NOT NULL,
+    -> company_id INT REFERENCES company(company_id),
+    -> name VARCHAR(100) NOT NULL,
+    -> phone_no VARCHAR(200) NOT NULL,
+    ->  address VARCHAR(250) NOT NULL DEFAULT 'TBD',
+    -> gender CHAR(1) NOT NULL,
+    -> PRIMARY KEY(employee_id),
+    ->  FOREIGN KEY(company_id) REFERENCES company(company_id)
+    -> );
+Query OK, 0 rows affected (0.44 sec)
+
+mysql> INSERT INTO employee VALUES
+    ->  (11,1,'Bill','91 9999999890','variable','M'),
+    ->  (12,1,'Terissa','91 9876543210','variable2','F'),
+    -> ;;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 3
+ERROR:
+No query specified
+
+mysql> INSERT INTO employee VALUES
+    ->  (11,1,'ajay','91 9999999890','variable','M'),
+    -> (12,1,'Terissa','91 9876543210','variable2','F'),
+    -> (13,1,'prvin','91 9878998789','variable3','M'),
+    -> (21,2,'vinit','91 9898989898','constant1','M');
+Query OK, 4 rows affected (0.19 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO employee_payroll VALUES ('7','Terissa','NULL','NULL','Marketing','F',3000000,1000000,200000,500000,1500000,'2018-01-13');
+Query OK, 1 row affected (0.15 sec)
+
+mysql>  SELECT * FROM EMPLOYEE;
++-------------+------------+---------+---------------+-----------+--------+
+| employee_id | company_id | name    | phone_no      | address   | gender |
++-------------+------------+---------+---------------+-----------+--------+
+|          11 |          1 | ajay    | 91 9999999890 | variable  | M      |
+|          12 |          1 | Terissa | 91 9876543210 | variable2 | F      |
+|          13 |          1 | prvin   | 91 9878998789 | variable3 | M      |
+|          21 |          2 | vinit   | 91 9898989898 | constant1 | M      |
++-------------+------------+---------+---------------+-----------+--------+
+4 rows in set (0.00 sec)
+
+mysql>  CREATE TABLE employee_department(
+    -> employee_id INT REFERENCES employee(employee_id),
+    ->  dept_ID INT REFERENCES department(dept_ID),
+    ->  );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 4
+mysql> ALTER TABLE employee_department
+    -> ADD PRIMARY KEY(employee_id,dept_id);
+ERROR 1146 (42S02): Table 'employee_payroll.employee_department' doesn't exist
+mysql>  CREATE TABLE employee_department(
+    -> ^C
+mysql>  CREATE TABLE employee_department(
+    -> employee_id INT REFERENCES employee(employee_id),
+    -> dept_ID INT REFERENCES department(dept_ID),
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 4
+mysql>  CREATE TABLE employee_department(
+    -> employee_id INT REFERENCES employee(employee_id),
+    -> dept_ID INT REFERENCES department(dept_ID));
+Query OK, 0 rows affected (0.43 sec)
+
+mysql> ALTER TABLE employee_department
+    -> ADD PRIMARY KEY(employee_id,dept_id);
+Query OK, 0 rows affected (0.87 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> describe employee_department;
++-------------+---------+------+-----+---------+-------+
+| Field       | Type    | Null | Key | Default | Extra |
++-------------+---------+------+-----+---------+-------+
+| employee_id | int(11) | NO   | PRI | NULL    |       |
+| dept_ID     | int(11) | NO   | PRI | NULL    |       |
++-------------+---------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> CREATE TABLE payroll (
+    -> id INT REFERENCES employee(id),
+    -> basic_pay DOUBLE NOT NULL,
+    -> deductions DOUBLE NOT NULL,
+    -> taxable_pay DOUBLE NOT NULL,
+    -> tax DOUBLE NOT NULL,
+    -> net_pay DOUBLE NOT NULL
+    -> );
+Query OK, 0 rows affected (0.58 sec)
+
+mysql> DESCRIBE payroll;
++-------------+---------+------+-----+---------+-------+
+| Field       | Type    | Null | Key | Default | Extra |
++-------------+---------+------+-----+---------+-------+
+| id          | int(11) | YES  |     | NULL    |       |
+| basic_pay   | double  | NO   |     | NULL    |       |
+| deductions  | double  | NO   |     | NULL    |       |
+| taxable_pay | double  | NO   |     | NULL    |       |
+| tax         | double  | NO   |     | NULL    |       |
+| net_pay     | double  | NO   |     | NULL    |       |
++-------------+---------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> INSERT INTO payroll VALUES
+    -> (11,10000,500,1000,500,9000),(12,20000,1000,2000,1000,18000),(13,30000,2000,4000,2000,26000),(21,40000,3000,6000,3000,34000);
+Query OK, 4 rows affected (0.18 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM PAYROLL;
++------+-----------+------------+-------------+------+---------+
+| id   | basic_pay | deductions | taxable_pay | tax  | net_pay |
++------+-----------+------------+-------------+------+---------+
+|   11 |     10000 |        500 |        1000 |  500 |    9000 |
+|   12 |     20000 |       1000 |        2000 | 1000 |   18000 |
+|   13 |     30000 |       2000 |        4000 | 2000 |   26000 |
+|   21 |     40000 |       3000 |        6000 | 3000 |   34000 |
++------+-----------+------------+-------------+------+---------+
+4 rows in set (0.00 sec)
+
+
+
