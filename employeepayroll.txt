@@ -526,4 +526,26 @@ mysql> SELECT * FROM PAYROLL;
 4 rows in set (0.00 sec)
 
 
+USE CASE 12
+
+mysql> SELECT SUM(net_pay) FROM employee e left join payroll  ON employee_id = e.employee_id GROUP BY e.gender;
++--------------+
+| SUM(net_pay) |
++--------------+
+|        87000 |
+|       261000 |
++--------------+
+2 rows in set (0.18 sec)
+
+mysql> SELECT MAX(net_pay) FROM employee e LEFT JOIN payroll p ON employee_id = e.employee_id GROUP BY e.gender;
++--------------+
+| MAX(net_pay) |
++--------------+
+|        34000 |
+|        34000 |
++--------------+
+2 rows in set (0.10 sec)
+
+mysql>
+
 
